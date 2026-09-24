@@ -1,30 +1,34 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [SerializeField] float attackRange;
-    [SerializeField] int damage;
+    [SerializeField] float attackDuration;
+    [SerializeField] float cooldown;
+    [SerializeField] ParticleSystem attackEffect;
+    [SerializeField] GameObject attackHitbox;
+
+    bool attacking;
+
+    void Start()
+    {
+        attackHitbox.SetActive(false);
+    }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            Attack();
-        }
+        if (Input.GetKeyDown(KeyCode.Space) && !attacking)
+            StartCoroutine(Attack());
     }
 
-    void Attack()
+    IEnumerator Attack()
     {
-        Collider[] enemies = Physics.OverlapSphere(transform.position, attackRange);
-
-        foreach (Collider enemy in enemies)
-        {
-            EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
-
-            if (enemyHealth != null)
-            {
-                enemyHealth.TakeDamage(damage);
-            }
-        }
+        attacking = true;
+        attackHitbox.SetActive(true);
+        attackEffect.Play();
+        yield return new WaitForSeconds(attackDuration);
+        attackHitbox.SetActive(false);
+        yield return new WaitForSeconds(cooldown);
+        attacking = false;
     }
 }

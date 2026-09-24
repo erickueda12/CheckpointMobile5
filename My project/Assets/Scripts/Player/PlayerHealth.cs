@@ -4,7 +4,7 @@ using System.Collections;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [Header("Player Settings")]
+    [Header("Health Settings")]
     [SerializeField] int maxHealth;
 
     [Header("Game Over Ragdoll")]
@@ -20,6 +20,7 @@ public class PlayerHealth : MonoBehaviour
 
     private Rigidbody rb;
     private PlayerMovement playerMovement;
+    private PlayerAttack playerAttack;
 
     private void Awake()
     {
@@ -56,6 +57,7 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         playerMovement.enabled = false;
+        playerAttack.enabled = false;
 
         rb.constraints = RigidbodyConstraints.None;
 
