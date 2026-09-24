@@ -20,8 +20,14 @@ public class PlayerMovement : MonoBehaviour
         movement = new Vector3(horizontal, 0f, vertical).normalized;
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
+        if (movement != Vector3.zero)
+        {
+            Quaternion rotation = Quaternion.LookRotation(movement);
+            rb.MoveRotation(rotation);
+        }
+
         rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
     }
 }
