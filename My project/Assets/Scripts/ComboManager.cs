@@ -3,9 +3,16 @@ using TMPro;
 
 public class ComboManager : MonoBehaviour
 {
+    [Header("ComboUI")]
     [SerializeField] TMP_Text styleText;
     [SerializeField] TMP_Text comboText;
     [SerializeField] float comboTime;
+
+    [Header("Audio")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip rankUpSound;
+
+    private string currentRank = "";
 
     private Vector3 originalPosition;
     private int combo;
@@ -75,28 +82,25 @@ public class ComboManager : MonoBehaviour
         combo++;
         comboTimer = comboTime;
 
-        if (combo >= 50)
+        string newRank = GetRank(combo);
+
+        if (currentRank != "" && newRank != currentRank)
         {
-            styleText.text = "S";
-        }
-        else if (combo >= 25)
-        {
-            styleText.text = "A";
-        }
-        else if (combo >= 10)
-        {
-            styleText.text = "B";
-        }
-        else if (combo >= 5)
-        {
-            styleText.text = "C";
-        }
-        else
-        {
-            styleText.text = "D";
+            audioSource.PlayOneShot(rankUpSound);
         }
 
+        currentRank = newRank;
+        styleText.text = newRank;
         comboText.text = "Combo: " + combo;
         styleText.gameObject.SetActive(true);
+    }
+
+    string GetRank(int value)
+    {
+        if (value >= 50) return "S";
+        if (value >= 25) return "A";
+        if (value >= 10) return "B";
+        if (value >= 5) return "C";
+        return "D";
     }
 }

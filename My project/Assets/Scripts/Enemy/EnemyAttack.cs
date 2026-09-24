@@ -5,6 +5,9 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] int damage;
     [SerializeField] float attackCooldown;
 
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip attackSound;
+
     private float nextAttackTime;
 
     private void OnCollisionStay(Collision collision)
@@ -18,6 +21,7 @@ public class EnemyAttack : MonoBehaviour
                 if (playerHealth != null)
                 {
                     playerHealth.TakeDamage(damage);
+                    audioSource.PlayOneShot(attackSound);
                     nextAttackTime = Time.time + attackCooldown;
                 }
             }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.Audio;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -15,6 +16,14 @@ public class PlayerHealth : MonoBehaviour
     [Header ("UI Settings")]
     [SerializeField] TMP_Text healthText;
     [SerializeField] GameObject gameOverPanel;
+
+    [Header("Audio")]
+    [SerializeField] AudioSource audioSource;
+    [SerializeField] AudioClip introSound;
+    [SerializeField] AudioClip deathScreamSound;
+    [SerializeField] AudioClip fatalHitSound;
+
+    public bool isDead;
 
     private int currentHealth;
 
@@ -31,18 +40,24 @@ public class PlayerHealth : MonoBehaviour
     {
         currentHealth = maxHealth;
 
+        audioSource.PlayOneShot(introSound, 0.7f);
+
         rb = GetComponent<Rigidbody>();
         playerMovement = GetComponent<PlayerMovement>();
+        playerAttack = GetComponent<PlayerAttack>();
 
         UpdateHealthText();
     }
 
     public void TakeDamage(int damage)
     {
+        if (isDead) return;
+
         currentHealth -= damage;
 
         if (currentHealth <= 0)
         {
+            isDead = true;
             Die();
         }
 
@@ -58,6 +73,9 @@ public class PlayerHealth : MonoBehaviour
     {
         playerMovement.enabled = false;
         playerAttack.enabled = false;
+
+        audioSource.PlayOneShot(deathScreamSound);
+        audioSource.PlayOneShot(fatalHitSound);
 
         rb.constraints = RigidbodyConstraints.None;
 
