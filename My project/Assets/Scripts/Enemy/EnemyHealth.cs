@@ -6,6 +6,8 @@ public class EnemyHealth : MonoBehaviour
 
     private int currentHealth;
 
+    public static event System.Action OnEnemyDied;
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -23,6 +25,7 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
+        OnEnemyDied?.Invoke();
         Destroy(gameObject);
     }
 }
