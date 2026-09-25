@@ -41,4 +41,19 @@ public class EnemySpawner : MonoBehaviour
 
         enemyFactory.CreateEnemy(type, spawnPosition);
     }
+
+    void OnEnable()
+    {
+        PlayerHealth.OnPlayerDied += Stop;
+    }
+
+    void OnDisable()
+    {
+        PlayerHealth.OnPlayerDied -= Stop;
+    }
+
+    void Stop()
+    {
+        enabled = false;
+    }
 }

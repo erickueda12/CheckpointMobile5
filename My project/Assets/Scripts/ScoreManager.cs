@@ -4,6 +4,7 @@ using TMPro;
 public class ScoreManager : MonoBehaviour
 {
     [SerializeField] TMP_Text scoreText;
+    [SerializeField] TMP_Text scoreGameOverText;
 
     private int score;
 
@@ -21,5 +22,6 @@ public class ScoreManager : MonoBehaviour
     {
         score++;
         scoreText.text = "Pontos: " + score;
+        scoreGameOverText.text = "Pontos: " + score;
     }
 }

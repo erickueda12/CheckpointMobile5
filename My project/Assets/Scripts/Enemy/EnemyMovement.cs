@@ -6,11 +6,15 @@ public class EnemyMovement : MonoBehaviour
 
     private Rigidbody rb;
     private Transform player;
+    private PlayerHealth playerHealth;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        player = GameObject.FindGameObjectWithTag("Player").transform;
+
+        GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+        player = playerObject.transform;
+        playerHealth = playerObject.GetComponent<PlayerHealth>();
     }
 
     void FixedUpdate()
@@ -25,5 +29,20 @@ public class EnemyMovement : MonoBehaviour
         }
 
         rb.MovePosition(rb.position + direction * speed * Time.fixedDeltaTime);
+    }
+
+    void OnEnable()
+    {
+        PlayerHealth.OnPlayerDied += Stop;
+    }
+
+    void OnDisable()
+    {
+        PlayerHealth.OnPlayerDied -= Stop;
+    }
+
+    void Stop()
+    {
+        enabled = false;
     }
 }

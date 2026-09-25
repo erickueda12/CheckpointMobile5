@@ -31,6 +31,8 @@ public class PlayerHealth : MonoBehaviour
     private PlayerMovement playerMovement;
     private PlayerAttack playerAttack;
 
+    public static event System.Action OnPlayerDied;
+
     private void Awake()
     {
         gameOverPanel.SetActive(false);
@@ -73,6 +75,8 @@ public class PlayerHealth : MonoBehaviour
     {
         playerMovement.enabled = false;
         playerAttack.enabled = false;
+
+        OnPlayerDied?.Invoke();
 
         audioSource.PlayOneShot(deathScreamSound);
         audioSource.PlayOneShot(fatalHitSound);
